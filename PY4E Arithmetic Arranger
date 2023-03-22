@@ -1,0 +1,43 @@
+def arithmetic_arranger(problems, show_answers=False):
+    if len(problems) > 5:
+        return "Error: Too Many Problems"
+    row1 = ""
+    row2 = ""
+    line = ""
+    result = ""
+
+    for problem in problems:
+        components = problem.split()
+
+        if not components[0].isdigit() or not components[2].isdigit():
+            return "Error: Numbers must only contain digits."
+        if components[1] not in ["+","-"]:
+            return "Error: Operator must be '+' or'-'."
+        if len(components[0]) > 4 or len(components[2]) > 4:
+            return "Error: Numbers cannot be more than four digits."
+
+        max_length = max(len(components[0]), len(components[2]))
+        operand1 = components[0].rjust(max_length + 2)
+        operand2 = components[2].rjust(max_length + 1)
+        line += "-" * (max_length + 2)
+        row1 += operand1 + "   "
+        row2 += components[1] + "   " + operand2 + "   "
+
+        if show_answers:
+            if components[1] == "+":
+                result_value = int(components[0]) + int(components[2])
+            else:
+                result_value = int(components[0]) - int(components[2])
+
+            result_str = str(result_value).rjust(max_length + 2)
+            result += result_str + "   "
+
+    arranged_problems = row1.rstrip() + "\n" + row2.rstrip() + "\n" + line.rstrip()
+
+    if show_answers:
+        arranged_problems += "\n" + result.rstrip()
+
+    return arranged_problems
+
+problems = ["32 + 698", "3801 - 2", "45 + 43", "123 + 49"]
+print(arithmetic_arranger(problems, True))
